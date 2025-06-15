@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <type_traits>
 
-#include <constexpr_queue.hpp>
+#include <MaCe/constexpr_queue.hpp>
 
 TEST(ConstexprQueueTypesTest, PrimitiveType)
 {

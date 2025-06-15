@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <constexpr_queue.hpp>
+#include <MaCe/constexpr_queue.hpp>
 
 TEST(ConstexprQueueFunctionalityTest, Push)
 {
