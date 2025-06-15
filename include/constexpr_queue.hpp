@@ -1,26 +1,26 @@
 #include <cstddef>
 #include <utility>
+#include <variant>
 #include <cassert>
 
 template <typename T, std::size_t Capacity>
 class constexpr_queue
 {
 public:
-
     // Element access
 
     constexpr const T &front() const
     {
         assert(head != tail);
 
-        return data_[head];
+        return std::get<T>(data_[head]);
     }
 
     constexpr const T &back() const
     {
         assert(head != tail);
 
-        return data_[tail - 1];
+        return std::get<T>(data_[tail - 1]);
     }
 
     // Capacity
@@ -59,12 +59,13 @@ public:
         data_[tail] = std::forward<T>(value);
         tail = (++tail) % Capacity;
     }
-    
+
     constexpr T pop()
     {
         assert(!empty());
 
-        T value = data_[head];
+        T value = std::get<T>(data_[head]);
+        data_[head] = std::monostate{};
         head = (head + 1) % Capacity;
         return value;
     }
@@ -153,7 +154,7 @@ public:
     }
 
 private:
-    T data_[Capacity] {};
-    std::size_t head { 0 };
-    std::size_t tail { 0 };
+    std::variant<std::monostate, T> data_[Capacity];
+    std::size_t head{0};
+    std::size_t tail{0};
 };

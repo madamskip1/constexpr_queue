@@ -13,11 +13,10 @@ TEST(ConstexprQueueTypesTest, PrimitiveType)
 
 TEST(ConstexprQueueTypesTest, StandradLibraryType)
 {
-    // Will not compile atm
-    // constexpr constexpr_queue<std::string, 5> queue;
-    // EXPECT_TRUE(queue.empty());
-    // EXPECT_EQ(queue.size(), 0);
-    // EXPECT_EQ(queue.capacity(), 5);
+    constexpr constexpr_queue<std::string, 5> queue;
+    EXPECT_TRUE(queue.empty());
+    EXPECT_EQ(queue.size(), 0);
+    EXPECT_EQ(queue.capacity(), 5);
 }
 
 TEST(ConstexprQueueTypesTest, UserDefinedType_DefaultConstructible_TrivialyDestructible)
@@ -48,11 +47,10 @@ TEST(ConstexprQueueTypesTest, UserDefinedType_NonDefaultConstructible_TrivialyDe
     EXPECT_FALSE(std::is_default_constructible_v<UserDefinedType>);
     EXPECT_TRUE(std::is_trivially_destructible_v<UserDefinedType>);
 
-    // Will not compile atm as constexpr_queue requires default constructibility
-    // constexpr constexpr_queue<UserDefinedType, 5> queue;
-    // EXPECT_TRUE(queue.empty());
-    // EXPECT_EQ(queue.size(), 0);
-    // EXPECT_EQ(queue.capacity(), 5);
+    constexpr constexpr_queue<UserDefinedType, 5> queue;
+    EXPECT_TRUE(queue.empty());
+    EXPECT_EQ(queue.size(), 0);
+    EXPECT_EQ(queue.capacity(), 5);
 }
 
 TEST(ConstexprQueueTypesTest, UserDefinedType_DefaultConstructible_NonTrivialDestructible)
@@ -68,10 +66,10 @@ TEST(ConstexprQueueTypesTest, UserDefinedType_DefaultConstructible_NonTrivialDes
     EXPECT_FALSE(std::is_trivially_destructible_v<UserDefinedType>);
 
     // Will not compile atm as constexpr_queue requires trivial destructibility
-    // constexpr constexpr_queue<UserDefinedType, 5> queue;
-    // EXPECT_TRUE(queue.empty());
-    // EXPECT_EQ(queue.size(), 0);
-    // EXPECT_EQ(queue.capacity(), 5);
+    constexpr constexpr_queue<UserDefinedType, 5> queue;
+    EXPECT_TRUE(queue.empty());
+    EXPECT_EQ(queue.size(), 0);
+    EXPECT_EQ(queue.capacity(), 5);
 }
 
 TEST(ConstexprQueueTypesTest, UserDefinedType_NonDefaultConstructible_NonTrivialDestructible)
@@ -87,9 +85,8 @@ TEST(ConstexprQueueTypesTest, UserDefinedType_NonDefaultConstructible_NonTrivial
     EXPECT_FALSE(std::is_default_constructible_v<UserDefinedType>);
     EXPECT_FALSE(std::is_trivially_destructible_v<UserDefinedType>);
 
-    // Will not compile atm as constexpr_queue requires default constructibility
-    // constexpr constexpr_queue<UserDefinedType, 5> queue;
-    // EXPECT_TRUE(queue.empty());
-    // EXPECT_EQ(queue.size(), 0);
-    // EXPECT_EQ(queue.capacity(), 5);
+    constexpr constexpr_queue<UserDefinedType, 5> queue;
+    EXPECT_TRUE(queue.empty());
+    EXPECT_EQ(queue.size(), 0);
+    EXPECT_EQ(queue.capacity(), 5);
 }
