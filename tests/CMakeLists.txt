@@ -11,7 +11,7 @@ add_executable(Constexpr_Queue_tests)
 
 target_sources(Constexpr_Queue_tests
     PRIVATE
-        simple_test.cpp
+        functionality_tests.cpp
 )
 
 target_link_libraries(Constexpr_Queue_tests
