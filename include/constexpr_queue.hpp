@@ -151,6 +151,13 @@ public:
 
     constexpr void clear()
     {
+        auto head = head_;
+        for (auto i = std::size_t{0}; i < size_; ++i)
+        {
+            data_[head] = std::monostate{};
+
+            head = (head + 1) % Capacity;
+        }
         head_ = 0;
         tail_ = 0;
         size_ = 0;
