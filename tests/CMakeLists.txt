@@ -12,6 +12,7 @@ add_executable(Constexpr_Queue_tests)
 target_sources(Constexpr_Queue_tests
     PRIVATE
         functionality_tests.cpp
+        types_tests.cpp
 )
 
 target_link_libraries(Constexpr_Queue_tests
