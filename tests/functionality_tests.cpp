@@ -272,3 +272,35 @@ TEST(ConstexprQueueFunctionalityTest, Operators_FullQueue)
     EXPECT_FALSE(queue1 > queue2);
     EXPECT_FALSE(queue1 >= queue2);
 }
+
+TEST(ConstexprQueueFunctionalityTest, CopyConstructorAndAssignment)
+{
+    constexpr_queue<int, 5> original;
+    original.push(10);
+    original.push(20);
+
+    constexpr_queue<int, 5> copy = original;
+    EXPECT_EQ(copy, original);
+
+    constexpr_queue<int, 5> assigned;
+    assigned = original;
+    EXPECT_EQ(assigned, original);
+}
+
+TEST(ConstexprQueueFunctionalityTest, MoveConstructorAndAssignment)
+{
+    constexpr_queue<int, 5> original;
+    original.push(10);
+    original.push(20);
+
+    constexpr_queue<int, 5> moved = std::move(original);
+    EXPECT_EQ(moved.size(), 2);
+    EXPECT_EQ(moved.front(), 10);
+    EXPECT_EQ(moved.back(), 20);
+
+    constexpr_queue<int, 5> another;
+    another = std::move(moved);
+    EXPECT_EQ(another.size(), 2);
+    EXPECT_EQ(another.front(), 10);
+    EXPECT_EQ(another.back(), 20);
+}

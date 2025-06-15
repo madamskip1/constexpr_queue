@@ -2,7 +2,7 @@
 
 
 namespace {
-    consteval int test_consteval_queue_1()
+    consteval int test_consteval_queue_push_pop_operators()
     {
         constexpr_queue<int, 5> queue;
         queue.push(1);
@@ -27,7 +27,7 @@ namespace {
         return queue.front();
     }
 
-    consteval bool test_consteval_queue_2()
+    consteval bool test_consteval_queue_clear()
     {
         constexpr_queue<int, 5> queue;
         queue.push(1);
@@ -41,12 +41,42 @@ namespace {
 
         return queue.empty();
     }
+
+    consteval bool test_consteval_queue_copy()
+    {
+        constexpr_queue<int, 5> original;
+        original.push(10);
+        original.push(20);
+
+        constexpr_queue<int, 5> copy = original;
+
+        constexpr_queue<int, 5> assigned;
+        assigned = original;
+
+        return assigned == original && copy == original;
+    }
+
+    consteval bool test_consteval_queue_move()
+    {
+        constexpr_queue<int, 5> original;
+        original.push(10);
+        original.push(20);
+
+        constexpr_queue<int, 5> moved = std::move(original);
+
+        constexpr_queue<int, 5> another;
+        another = std::move(moved);
+
+        return original.empty();
+    }
 }
 
 int main()
 {
-    volatile constexpr auto x = test_consteval_queue_1();
-    constexpr auto y = test_consteval_queue_2();
+    volatile constexpr auto x = test_consteval_queue_push_pop_operators();
+    volatile constexpr auto y = test_consteval_queue_clear();
+    volatile constexpr auto z = test_consteval_queue_copy();
+    volatile constexpr auto w = test_consteval_queue_move();
     return x;
 }
 
@@ -56,9 +86,11 @@ int main()
     main:
         push    rbp
         mov     rbp, rsp
-        mov     DWORD PTR [rbp-4], 4
-        mov     BYTE PTR [rbp-5], 1
-        mov     eax, 4
+        mov     DWORD PTR [rbp-4], 4    -> x
+        mov     BYTE PTR [rbp-5], 1     -> y
+        mov     BYTE PTR [rbp-6], 1     -> z
+        mov     BYTE PTR [rbp-7], 0     -> w
+        mov     eax, DWORD PTR [rbp-4]
         pop     rbp
         ret
 */
