@@ -4,7 +4,7 @@
 
 TEST(ConstexprQueueFunctionalityTest, Push)
 {
-    constexpr_queue<int, 5> queue;
+    MaCe::queue<int, 5> queue;
     queue.push(55);
     EXPECT_FALSE(queue.empty());
     EXPECT_EQ(queue.size(), 1);
@@ -20,7 +20,7 @@ TEST(ConstexprQueueFunctionalityTest, Push)
 
 TEST(ConstexprQueueFunctionalityTest, Pop)
 {
-    constexpr_queue<int, 5> queue;
+    MaCe::queue<int, 5> queue;
     queue.push(55);
     queue.push(66);
 
@@ -37,7 +37,7 @@ TEST(ConstexprQueueFunctionalityTest, Pop)
 
 TEST(ConstexprQueueFunctionalityTest, Emplace)
 {
-    constexpr_queue<int, 5> queue;
+    MaCe::queue<int, 5> queue;
     queue.emplace(77);
     EXPECT_FALSE(queue.empty());
     EXPECT_EQ(queue.size(), 1);
@@ -53,11 +53,11 @@ TEST(ConstexprQueueFunctionalityTest, Emplace)
 
 TEST(ConstexprQueueFunctionalityTest, Swap)
 {
-    constexpr_queue<int, 5> queue1;
+    MaCe::queue<int, 5> queue1;
     queue1.push(1);
     queue1.push(2);
 
-    constexpr_queue<int, 5> queue2;
+    MaCe::queue<int, 5> queue2;
     queue2.push(3);
     queue2.push(4);
 
@@ -74,14 +74,14 @@ TEST(ConstexprQueueFunctionalityTest, Swap)
 
 TEST(ConstexprQueueFunctionalityTest, Swap_DifferentHeadTail)
 {
-    constexpr_queue<int, 3> q1;
+    MaCe::queue<int, 3> q1;
     q1.push(1);
     q1.push(2);
     q1.pop();
     q1.push(3);
     q1.push(4);
 
-    constexpr_queue<int, 3> q2;
+    MaCe::queue<int, 3> q2;
     q2.push(5);
     q2.push(6);
 
@@ -98,11 +98,11 @@ TEST(ConstexprQueueFunctionalityTest, Swap_DifferentHeadTail)
 
 TEST(ConstexprQueueFunctionalityTest, OperatorEquality)
 {
-    constexpr_queue<int, 5> queue1;
+    MaCe::queue<int, 5> queue1;
     queue1.push(1);
     queue1.push(2);
 
-    constexpr_queue<int, 5> queue2;
+    MaCe::queue<int, 5> queue2;
     queue2.push(1);
     queue2.push(2);
 
@@ -115,11 +115,11 @@ TEST(ConstexprQueueFunctionalityTest, OperatorEquality)
 }
 TEST(ConstexprQueueFunctionalityTest, OperatorLessThan)
 {
-    constexpr_queue<int, 5> queue1;
+    MaCe::queue<int, 5> queue1;
     queue1.push(1);
     queue1.push(2);
 
-    constexpr_queue<int, 5> queue2;
+    MaCe::queue<int, 5> queue2;
     queue2.push(1);
     queue2.push(3);
 
@@ -133,11 +133,11 @@ TEST(ConstexprQueueFunctionalityTest, OperatorLessThan)
 
 TEST(ConstexprQueueFunctionalityTest, OperatorGreaterThan)
 {
-    constexpr_queue<int, 5> queue1;
+    MaCe::queue<int, 5> queue1;
     queue1.push(1);
     queue1.push(2);
 
-    constexpr_queue<int, 5> queue2;
+    MaCe::queue<int, 5> queue2;
     queue2.push(1);
     queue2.push(3);
 
@@ -151,14 +151,14 @@ TEST(ConstexprQueueFunctionalityTest, OperatorGreaterThan)
 
 TEST(ConstexprQueueFunctionalityTest, Operators_WithDifferHeadTail)
 {
-    constexpr_queue<int, 3> queue1;
+    MaCe::queue<int, 3> queue1;
     queue1.push(1);
     queue1.push(2);
     queue1.pop();
     queue1.push(3);
     queue1.push(4);
 
-    constexpr_queue<int, 3> queue2;
+    MaCe::queue<int, 3> queue2;
     queue2.push(4);
     queue2.push(5);
 
@@ -172,7 +172,7 @@ TEST(ConstexprQueueFunctionalityTest, Operators_WithDifferHeadTail)
 
 TEST(ConstexprQueueFunctionalityTest, FullQueue)
 {
-    constexpr_queue<int, 3> queue;
+    MaCe::queue<int, 3> queue;
     queue.push(1);
     queue.push(2);
     queue.push(3);
@@ -187,7 +187,7 @@ TEST(ConstexprQueueFunctionalityTest, FullQueue)
 
 TEST(ConstexprQueueFunctionalityTest, WrapAround)
 {
-    constexpr_queue<int, 3> queue;
+    MaCe::queue<int, 3> queue;
     queue.push(1);
     queue.push(2);
     queue.pop();
@@ -202,7 +202,7 @@ TEST(ConstexprQueueFunctionalityTest, WrapAround)
 
 TEST(ConstexprQueueFunctionalityTest, FullQueue_WrapAround)
 {
-    constexpr_queue<int, 3> queue;
+    MaCe::queue<int, 3> queue;
     queue.push(1);
     queue.push(2);
     queue.pop();
@@ -219,7 +219,7 @@ TEST(ConstexprQueueFunctionalityTest, FullQueue_WrapAround)
 
 TEST(ConstexprQueueFunctionalityTest, Pop_EmptyQueue)
 {
-    constexpr_queue<int, 5> queue;
+    MaCe::queue<int, 5> queue;
 
     EXPECT_TRUE(queue.empty());
     EXPECT_DEATH({ queue.pop(); }, ".*");
@@ -227,7 +227,7 @@ TEST(ConstexprQueueFunctionalityTest, Pop_EmptyQueue)
 
 TEST(ConstexprQueueFunctionalityTest, ClearQueue)
 {
-    constexpr_queue<int, 5> queue;
+    MaCe::queue<int, 5> queue;
     queue.push(1);
     queue.push(2);
     queue.clear();
@@ -240,7 +240,7 @@ TEST(ConstexprQueueFunctionalityTest, ClearQueue)
 
 TEST(ConstexprQueueFunctionalityTest, ClearAfter_WrapAround)
 {
-    constexpr_queue<int, 3> queue;
+    MaCe::queue<int, 3> queue;
     queue.push(1);
     queue.push(2);
     queue.pop();
@@ -255,12 +255,12 @@ TEST(ConstexprQueueFunctionalityTest, ClearAfter_WrapAround)
 
 TEST(ConstexprQueueFunctionalityTest, Operators_FullQueue)
 {
-    constexpr_queue<int, 3> queue1;
+    MaCe::queue<int, 3> queue1;
     queue1.push(1);
     queue1.push(2);
     queue1.push(3);
 
-    constexpr_queue<int, 3> queue2;
+    MaCe::queue<int, 3> queue2;
     queue2.push(4);
     queue2.push(5);
     queue2.push(6);
@@ -275,30 +275,30 @@ TEST(ConstexprQueueFunctionalityTest, Operators_FullQueue)
 
 TEST(ConstexprQueueFunctionalityTest, CopyConstructorAndAssignment)
 {
-    constexpr_queue<int, 5> original;
+    MaCe::queue<int, 5> original;
     original.push(10);
     original.push(20);
 
-    constexpr_queue<int, 5> copy = original;
+    MaCe::queue<int, 5> copy = original;
     EXPECT_EQ(copy, original);
 
-    constexpr_queue<int, 5> assigned;
+    MaCe::queue<int, 5> assigned;
     assigned = original;
     EXPECT_EQ(assigned, original);
 }
 
 TEST(ConstexprQueueFunctionalityTest, MoveConstructorAndAssignment)
 {
-    constexpr_queue<int, 5> original;
+    MaCe::queue<int, 5> original;
     original.push(10);
     original.push(20);
 
-    constexpr_queue<int, 5> moved = std::move(original);
+    MaCe::queue<int, 5> moved = std::move(original);
     EXPECT_EQ(moved.size(), 2);
     EXPECT_EQ(moved.front(), 10);
     EXPECT_EQ(moved.back(), 20);
 
-    constexpr_queue<int, 5> another;
+    MaCe::queue<int, 5> another;
     another = std::move(moved);
     EXPECT_EQ(another.size(), 2);
     EXPECT_EQ(another.front(), 10);
@@ -309,7 +309,7 @@ TEST(ConstexprQueueFunctionalityTest, CompileTimeUsage)
 {
     constexpr auto build_queue = []
     {
-        constexpr_queue<int, 3> queue;
+        MaCe::queue<int, 3> queue;
         auto queu2 = queue;
         queu2.push(1);
         queu2.push(2);
@@ -324,7 +324,7 @@ TEST(ConstexprQueueFunctionalityTest, CompileTimeUsage)
 
 TEST(ConstexprQueueFunctionalityTest, ListInitialization_Full)
 {
-    constexpr_queue<int, 5> queue{1, 2, 3};
+    MaCe::queue<int, 5> queue{1, 2, 3};
     EXPECT_EQ(queue.size(), 3);
     EXPECT_EQ(queue.front(), 1);
     EXPECT_EQ(queue.back(), 3);
@@ -332,14 +332,14 @@ TEST(ConstexprQueueFunctionalityTest, ListInitialization_Full)
 
 TEST(ConstexprQueueFunctionalityTest, ListInitialization_Empty)
 {
-    constexpr_queue<int, 5> queue{};
+    MaCe::queue<int, 5> queue{};
     EXPECT_TRUE(queue.empty());
     EXPECT_EQ(queue.size(), 0);
 }
 
 TEST(ConstexprQueueFunctionalityTest, ListInitialization_PartialFill)
 {
-    constexpr_queue<int, 5> queue{1, 2};
+    MaCe::queue<int, 5> queue{1, 2};
     EXPECT_EQ(queue.size(), 2);
     EXPECT_EQ(queue.front(), 1);
     EXPECT_EQ(queue.back(), 2);

@@ -4,15 +4,17 @@
 #include <variant>
 #include <cassert>
 
+namespace MaCe // MAdamski-Constexpr
+{
 template <typename T, std::size_t Capacity>
-class constexpr_queue
+class queue
 {
 public:
-    constexpr constexpr_queue() = default;
+    constexpr queue() = default;
 
     template <typename... Args>
-        requires(sizeof...(Args) > 1 || !std::is_same_v<std::decay_t<std::tuple_element_t<0, std::tuple<Args...>>>, constexpr_queue>)
-    constexpr constexpr_queue(Args &&...args)
+        requires(sizeof...(Args) > 1 || !std::is_same_v<std::decay_t<std::tuple_element_t<0, std::tuple<Args...>>>, queue>)
+    constexpr queue(Args &&...args)
     {
         static_assert(sizeof...(Args) <= Capacity, "Too many arguments");
         (emplace(std::forward<Args>(args)), ...);
@@ -76,7 +78,7 @@ public:
         return value;
     }
 
-    constexpr void swap(constexpr_queue &other)
+    constexpr void swap(queue &other)
     {
         std::swap(head_, other.head_);
         std::swap(tail_, other.tail_);
@@ -86,7 +88,7 @@ public:
 
     // Non-member functions
 
-    constexpr bool operator==(const constexpr_queue &other) const
+    constexpr bool operator==(const queue &other) const
     {
         if (size_ != other.size())
         {
@@ -109,12 +111,12 @@ public:
         return true;
     }
 
-    constexpr bool operator!=(const constexpr_queue &other) const
+    constexpr bool operator!=(const queue &other) const
     {
         return !(*this == other);
     }
 
-    constexpr bool operator<(const constexpr_queue &other) const
+    constexpr bool operator<(const queue &other) const
     {
         auto head = head_;
         auto otherHead = other.head_;
@@ -137,17 +139,17 @@ public:
         return false;
     }
 
-    constexpr bool operator<=(const constexpr_queue &other) const
+    constexpr bool operator<=(const queue &other) const
     {
         return *this < other || *this == other;
     }
 
-    constexpr bool operator>(const constexpr_queue &other) const
+    constexpr bool operator>(const queue &other) const
     {
         return !(*this <= other);
     }
 
-    constexpr bool operator>=(const constexpr_queue &other) const
+    constexpr bool operator>=(const queue &other) const
     {
         return !(*this < other);
     }
@@ -179,3 +181,4 @@ private:
     std::size_t tail_{0};
     std::size_t size_{0};
 };
+}

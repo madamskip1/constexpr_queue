@@ -4,7 +4,7 @@
 namespace {
     consteval int test_consteval_queue_push_pop_operators()
     {
-        constexpr_queue<int, 5> queue;
+        MaCe::queue<int, 5> queue;
         queue.push(1);
         queue.push(2);
 
@@ -12,7 +12,7 @@ namespace {
 
         queue.emplace(3);
 
-        constexpr_queue<int, 5> other_queue;
+        MaCe::queue<int, 5> other_queue;
         other_queue.push(4);
 
         queue.swap(other_queue);
@@ -29,7 +29,7 @@ namespace {
 
     consteval bool test_consteval_queue_clear()
     {
-        constexpr_queue<int, 5> queue;
+        MaCe::queue<int, 5> queue;
         queue.push(1);
         queue.push(2);
 
@@ -44,13 +44,13 @@ namespace {
 
     consteval bool test_consteval_queue_copy()
     {
-        constexpr_queue<int, 5> original;
+        MaCe::queue<int, 5> original;
         original.push(10);
         original.push(20);
 
-        constexpr_queue<int, 5> copy = original;
+        MaCe::queue<int, 5> copy = original;
 
-        constexpr_queue<int, 5> assigned;
+        MaCe::queue<int, 5> assigned;
         assigned = original;
 
         return assigned == original && copy == original;
@@ -58,13 +58,13 @@ namespace {
 
     consteval bool test_consteval_queue_move()
     {
-        constexpr_queue<int, 5> original;
+        MaCe::queue<int, 5> original;
         original.push(10);
         original.push(20);
 
-        constexpr_queue<int, 5> moved = std::move(original);
+        MaCe::queue<int, 5> moved = std::move(original);
 
-        constexpr_queue<int, 5> another;
+        MaCe::queue<int, 5> another;
         another = std::move(moved);
 
         return original.empty();

@@ -8,6 +8,7 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 endif ()
 
 add_library(Constexpr_Queue INTERFACE)
+add_library(MaCe::Constexpr_Queue ALIAS Constexpr_Queue)
 
 target_include_directories(Constexpr_Queue INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
