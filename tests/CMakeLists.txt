@@ -23,3 +23,17 @@ target_link_libraries(Constexpr_Queue_tests
 
 include(GoogleTest)
 gtest_discover_tests(Constexpr_Queue_tests)
+
+
+add_executable(Constexpr_Queue_consteval_test)
+
+target_compile_options(Constexpr_Queue_consteval_test PRIVATE -Werror=invalid-constexpr -O0)
+
+target_sources(Constexpr_Queue_consteval_test
+    PRIVATE
+        consteval_compilation_test.cpp
+)
+target_link_libraries(Constexpr_Queue_consteval_test
+    PRIVATE
+        Constexpr_Queue
+)
