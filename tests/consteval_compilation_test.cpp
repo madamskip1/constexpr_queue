@@ -26,11 +26,27 @@ namespace {
 
         return queue.front();
     }
+
+    consteval bool test_consteval_queue_clear()
+    {
+        constexpr_queue<int, 5> queue;
+        queue.push(1);
+        queue.push(2);
+
+        queue.pop();
+
+        queue.emplace(3);
+
+        queue.clear();
+
+        return queue.empty();
+    }
 }
 
 int main()
 {
     volatile constexpr auto x = test_consteval_queue_front();
+    constexpr auto y = test_consteval_queue_clear();
     return x;
 }
 
@@ -41,6 +57,7 @@ int main()
         push    rbp
         mov     rbp, rsp
         mov     DWORD PTR [rbp-4], 4
+        mov     BYTE PTR [rbp-5], 1
         mov     eax, 4
         pop     rbp
         ret
