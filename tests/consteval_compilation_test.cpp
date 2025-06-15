@@ -2,7 +2,7 @@
 
 
 namespace {
-    consteval int test_consteval_queue_front()
+    consteval int test_consteval_queue_1()
     {
         constexpr_queue<int, 5> queue;
         queue.push(1);
@@ -27,7 +27,7 @@ namespace {
         return queue.front();
     }
 
-    consteval bool test_consteval_queue_clear()
+    consteval bool test_consteval_queue_2()
     {
         constexpr_queue<int, 5> queue;
         queue.push(1);
@@ -45,8 +45,8 @@ namespace {
 
 int main()
 {
-    volatile constexpr auto x = test_consteval_queue_front();
-    constexpr auto y = test_consteval_queue_clear();
+    volatile constexpr auto x = test_consteval_queue_1();
+    constexpr auto y = test_consteval_queue_2();
     return x;
 }
 

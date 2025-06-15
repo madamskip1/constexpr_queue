@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstddef>
 #include <utility>
 #include <variant>
@@ -26,7 +27,7 @@ public:
 
     constexpr bool empty() const
     {
-        return size() == 0;
+        return size_ == 0;
     }
 
     constexpr std::size_t size() const
@@ -38,7 +39,7 @@ public:
 
     constexpr void push(const T &value)
     {
-        assert(size() < Capacity);
+        assert(size_ < Capacity);
 
         data_[tail_] = value;
         tail_ = (tail_ + 1) % Capacity;
@@ -47,7 +48,7 @@ public:
 
     constexpr void emplace(T &&value)
     {
-        assert(size() < Capacity);
+        assert(size_ < Capacity);
 
         data_[tail_] = std::forward<T>(value);
         tail_ = (++tail_) % Capacity;
@@ -77,22 +78,24 @@ public:
 
     constexpr bool operator==(const constexpr_queue &other) const
     {
-        if (size() != other.size())
+        if (size_ != other.size())
         {
             return false;
         }
 
-        auto i = head_;
-        auto j = other.head_;
-        while (i != tail_)
+        auto head = head_;
+        auto otherHead = other.head_;
+
+        for (auto i = std::size_t{0}; i < size_; ++i)
         {
-            if (data_[i] != other.data_[j])
+            if (data_[head] != other.data_[otherHead])
             {
                 return false;
             }
-            i = ++i % Capacity;
-            j = ++j % other.capacity();
+            head = (head + 1) % Capacity;
+            otherHead = (otherHead + 1) % other.capacity();
         }
+
         return true;
     }
 
@@ -103,22 +106,25 @@ public:
 
     constexpr bool operator<(const constexpr_queue &other) const
     {
-        auto i = head_;
-        auto j = other.head_;
-        while (i != tail_ && j != other.tail_)
+        auto head = head_;
+        auto otherHead = other.head_;
+
+        for (auto i = std::size_t{0}; i < std::min(size_, other.size_); ++i)
         {
-            if (data_[i] < other.data_[j])
+            if (data_[head] < other.data_[otherHead])
             {
                 return true;
             }
-            else if (data_[i] > other.data_[j])
+            if (data_[head] > other.data_[otherHead])
             {
                 return false;
             }
-            i = ++i % Capacity;
-            j = ++j % other.capacity();
+
+            head = (head + 1) % Capacity;
+            otherHead = (otherHead + 1) % other.capacity();
         }
-        return size() < other.size();
+
+        return false;
     }
 
     constexpr bool operator<=(const constexpr_queue &other) const

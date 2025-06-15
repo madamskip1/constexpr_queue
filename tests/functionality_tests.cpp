@@ -177,3 +177,23 @@ TEST(ConstexprQueueFunctionalityTest, ClearQueue)
     EXPECT_DEATH({ queue.front(); }, ".*");
     EXPECT_DEATH({ queue.back(); }, ".*");
 }
+
+TEST(ConstexprQueueFunctionalityTest, OperatorsWhenFullQueue)
+{
+    constexpr_queue<int, 3> queue1;
+    queue1.push(1);
+    queue1.push(2);
+    queue1.push(3);
+
+    constexpr_queue<int, 3> queue2;
+    queue2.push(4);
+    queue2.push(5);
+    queue2.push(6);
+
+    EXPECT_FALSE(queue1 == queue2);
+    EXPECT_TRUE(queue1 != queue2);
+    EXPECT_TRUE(queue1 < queue2);
+    EXPECT_TRUE(queue1 <= queue2);
+    EXPECT_FALSE(queue1 > queue2);
+    EXPECT_FALSE(queue1 >= queue2);
+}
