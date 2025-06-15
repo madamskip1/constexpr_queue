@@ -11,35 +11,27 @@ public:
 
     constexpr const T &front() const
     {
-        assert(head != tail);
+        assert(!empty());
 
-        return std::get<T>(data_[head]);
+        return std::get<T>(data_[head_]);
     }
 
     constexpr const T &back() const
     {
-        assert(head != tail);
-
-        return std::get<T>(data_[tail - 1]);
+        assert(!empty());
+        return std::get<T>(data_[(tail_ + Capacity - 1) % Capacity]);
     }
 
     // Capacity
 
     constexpr bool empty() const
     {
-        return head == tail;
+        return size() == 0;
     }
 
     constexpr std::size_t size() const
     {
-        if (head <= tail)
-        {
-            return tail - head;
-        }
-        else
-        {
-            return Capacity - head + tail;
-        }
+        return size_;
     }
 
     // Modifiers
@@ -48,32 +40,36 @@ public:
     {
         assert(size() < Capacity);
 
-        data_[tail] = value;
-        tail = (tail + 1);
+        data_[tail_] = value;
+        tail_ = (tail_ + 1) % Capacity;
+        ++size_;
     }
 
     constexpr void emplace(T &&value)
     {
         assert(size() < Capacity);
 
-        data_[tail] = std::forward<T>(value);
-        tail = (++tail) % Capacity;
+        data_[tail_] = std::forward<T>(value);
+        tail_ = (++tail_) % Capacity;
+        ++size_;
     }
 
     constexpr T pop()
     {
         assert(!empty());
 
-        T value = std::get<T>(data_[head]);
-        data_[head] = std::monostate{};
-        head = (head + 1) % Capacity;
+        T value = std::get<T>(data_[head_]);
+        data_[head_] = std::monostate{};
+        head_ = (head_ + 1) % Capacity;
+        --size_;
         return value;
     }
 
     constexpr void swap(constexpr_queue &other)
     {
-        std::swap(head, other.head);
-        std::swap(tail, other.tail);
+        std::swap(head_, other.head_);
+        std::swap(tail_, other.tail_);
+        std::swap(size_, other.size_);
         std::swap(data_, other.data_);
     }
 
@@ -86,9 +82,9 @@ public:
             return false;
         }
 
-        auto i = head;
-        auto j = other.head;
-        while (i != tail)
+        auto i = head_;
+        auto j = other.head_;
+        while (i != tail_)
         {
             if (data_[i] != other.data_[j])
             {
@@ -107,9 +103,9 @@ public:
 
     constexpr bool operator<(const constexpr_queue &other) const
     {
-        auto i = head;
-        auto j = other.head;
-        while (i != tail && j != other.tail)
+        auto i = head_;
+        auto j = other.head_;
+        while (i != tail_ && j != other.tail_)
         {
             if (data_[i] < other.data_[j])
             {
@@ -149,12 +145,14 @@ public:
 
     constexpr void clear()
     {
-        head = 0;
-        tail = 0;
+        head_ = 0;
+        tail_ = 0;
+        size_ = 0;
     }
 
 private:
     std::variant<std::monostate, T> data_[Capacity];
-    std::size_t head{0};
-    std::size_t tail{0};
+    std::size_t head_{0};
+    std::size_t tail_{0};
+    std::size_t size_{0};
 };

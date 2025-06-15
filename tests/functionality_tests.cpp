@@ -124,3 +124,56 @@ TEST(ConstexprQueueFunctionalityTest, OperatorGreaterThan)
     EXPECT_TRUE(queue1 > queue2);
     EXPECT_TRUE(queue1 >= queue2);
 }
+
+TEST(ConstexprQueueFunctionalityTest, FullQueue)
+{
+    constexpr_queue<int, 3> queue;
+    queue.push(1);
+    queue.push(2);
+    queue.push(3);
+
+    EXPECT_FALSE(queue.empty());
+    EXPECT_EQ(queue.size(), 3);
+    EXPECT_EQ(queue.front(), 1);
+    EXPECT_EQ(queue.back(), 3);
+
+    EXPECT_DEATH({ queue.push(4); }, ".*");
+}
+
+TEST(ConstexprQueueFunctionalityTest, FullQueue_HeadNotFirst)
+{
+    constexpr_queue<int, 3> queue;
+    queue.push(1);
+    queue.push(2);
+    queue.pop(); // Remove 1
+    queue.push(3);
+    queue.push(4);
+
+    EXPECT_FALSE(queue.empty());
+    EXPECT_EQ(queue.size(), 3);
+    EXPECT_EQ(queue.front(), 2);
+    EXPECT_EQ(queue.back(), 4);
+
+    EXPECT_DEATH({ queue.push(5); }, ".*");
+}
+
+TEST(ConstexprQueueFunctionalityTest, PopEmptyQueue)
+{
+    constexpr_queue<int, 5> queue;
+
+    EXPECT_TRUE(queue.empty());
+    EXPECT_DEATH({ queue.pop(); }, ".*");
+}
+
+TEST(ConstexprQueueFunctionalityTest, ClearQueue)
+{
+    constexpr_queue<int, 5> queue;
+    queue.push(1);
+    queue.push(2);
+    queue.clear();
+
+    EXPECT_TRUE(queue.empty());
+    EXPECT_EQ(queue.size(), 0);
+    EXPECT_DEATH({ queue.front(); }, ".*");
+    EXPECT_DEATH({ queue.back(); }, ".*");
+}
