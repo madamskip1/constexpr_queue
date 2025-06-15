@@ -307,7 +307,8 @@ TEST(ConstexprQueueFunctionalityTest, MoveConstructorAndAssignment)
 
 TEST(ConstexprQueueFunctionalityTest, CompileTimeUsage)
 {
-    constexpr auto build_queue = [] {
+    constexpr auto build_queue = []
+    {
         constexpr_queue<int, 3> queue;
         auto queu2 = queue;
         queu2.push(1);
@@ -319,4 +320,27 @@ TEST(ConstexprQueueFunctionalityTest, CompileTimeUsage)
     static_assert(queue.size() == 2, "Queue should contain two elements");
     static_assert(queue.front() == 1, "Front should be 1");
     static_assert(queue.back() == 2, "Back should be 2");
+}
+
+TEST(ConstexprQueueFunctionalityTest, ListInitialization_Full)
+{
+    constexpr_queue<int, 5> queue{1, 2, 3};
+    EXPECT_EQ(queue.size(), 3);
+    EXPECT_EQ(queue.front(), 1);
+    EXPECT_EQ(queue.back(), 3);
+}
+
+TEST(ConstexprQueueFunctionalityTest, ListInitialization_Empty)
+{
+    constexpr_queue<int, 5> queue{};
+    EXPECT_TRUE(queue.empty());
+    EXPECT_EQ(queue.size(), 0);
+}
+
+TEST(ConstexprQueueFunctionalityTest, ListInitialization_PartialFill)
+{
+    constexpr_queue<int, 5> queue{1, 2};
+    EXPECT_EQ(queue.size(), 2);
+    EXPECT_EQ(queue.front(), 1);
+    EXPECT_EQ(queue.back(), 2);
 }

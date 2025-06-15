@@ -8,6 +8,16 @@ template <typename T, std::size_t Capacity>
 class constexpr_queue
 {
 public:
+    constexpr constexpr_queue() = default;
+
+    template <typename... Args>
+        requires(sizeof...(Args) > 1 || !std::is_same_v<std::decay_t<std::tuple_element_t<0, std::tuple<Args...>>>, constexpr_queue>)
+    constexpr constexpr_queue(Args &&...args)
+    {
+        static_assert(sizeof...(Args) <= Capacity, "Too many arguments");
+        (emplace(std::forward<Args>(args)), ...);
+    }
+
     // Element access
 
     constexpr const T &front() const
