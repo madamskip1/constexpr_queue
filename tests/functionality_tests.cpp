@@ -72,6 +72,30 @@ TEST(ConstexprQueueFunctionalityTest, Swap)
     EXPECT_EQ(queue2.back(), 2);
 }
 
+TEST(ConstexprQueueFunctionalityTest, Swap_DifferentHeadTail)
+{
+    constexpr_queue<int, 3> q1;
+    q1.push(1);
+    q1.push(2);
+    q1.pop();
+    q1.push(3);
+    q1.push(4);
+
+    constexpr_queue<int, 3> q2;
+    q2.push(5);
+    q2.push(6);
+
+    q1.swap(q2);
+
+    EXPECT_EQ(q1.size(), 2);
+    EXPECT_EQ(q1.front(), 5);
+    EXPECT_EQ(q1.back(), 6);
+
+    EXPECT_EQ(q2.size(), 3);
+    EXPECT_EQ(q2.front(), 2);
+    EXPECT_EQ(q2.back(), 4);
+}
+
 TEST(ConstexprQueueFunctionalityTest, OperatorEquality)
 {
     constexpr_queue<int, 5> queue1;
@@ -125,6 +149,27 @@ TEST(ConstexprQueueFunctionalityTest, OperatorGreaterThan)
     EXPECT_TRUE(queue1 >= queue2);
 }
 
+TEST(ConstexprQueueFunctionalityTest, Operators_WithDifferHeadTail)
+{
+    constexpr_queue<int, 3> queue1;
+    queue1.push(1);
+    queue1.push(2);
+    queue1.pop();
+    queue1.push(3);
+    queue1.push(4);
+
+    constexpr_queue<int, 3> queue2;
+    queue2.push(4);
+    queue2.push(5);
+
+    EXPECT_FALSE(queue1 == queue2);
+    EXPECT_TRUE(queue1 != queue2);
+    EXPECT_TRUE(queue1 < queue2);
+    EXPECT_TRUE(queue1 <= queue2);
+    EXPECT_FALSE(queue1 > queue2);
+    EXPECT_FALSE(queue1 >= queue2);
+}
+
 TEST(ConstexprQueueFunctionalityTest, FullQueue)
 {
     constexpr_queue<int, 3> queue;
@@ -140,12 +185,27 @@ TEST(ConstexprQueueFunctionalityTest, FullQueue)
     EXPECT_DEATH({ queue.push(4); }, ".*");
 }
 
-TEST(ConstexprQueueFunctionalityTest, FullQueue_HeadNotFirst)
+TEST(ConstexprQueueFunctionalityTest, WrapAround)
 {
     constexpr_queue<int, 3> queue;
     queue.push(1);
     queue.push(2);
-    queue.pop(); // Remove 1
+    queue.pop();
+    queue.push(3);
+    queue.push(4);
+
+    EXPECT_FALSE(queue.empty());
+    EXPECT_EQ(queue.size(), 3);
+    EXPECT_EQ(queue.front(), 2);
+    EXPECT_EQ(queue.back(), 4);
+}
+
+TEST(ConstexprQueueFunctionalityTest, FullQueue_WrapAround)
+{
+    constexpr_queue<int, 3> queue;
+    queue.push(1);
+    queue.push(2);
+    queue.pop();
     queue.push(3);
     queue.push(4);
 
@@ -157,7 +217,7 @@ TEST(ConstexprQueueFunctionalityTest, FullQueue_HeadNotFirst)
     EXPECT_DEATH({ queue.push(5); }, ".*");
 }
 
-TEST(ConstexprQueueFunctionalityTest, PopEmptyQueue)
+TEST(ConstexprQueueFunctionalityTest, Pop_EmptyQueue)
 {
     constexpr_queue<int, 5> queue;
 
@@ -178,7 +238,22 @@ TEST(ConstexprQueueFunctionalityTest, ClearQueue)
     EXPECT_DEATH({ queue.back(); }, ".*");
 }
 
-TEST(ConstexprQueueFunctionalityTest, OperatorsWhenFullQueue)
+TEST(ConstexprQueueFunctionalityTest, ClearAfter_WrapAround)
+{
+    constexpr_queue<int, 3> queue;
+    queue.push(1);
+    queue.push(2);
+    queue.pop();
+    queue.push(3);
+    queue.push(4); // should wrap
+    queue.clear();
+
+    EXPECT_TRUE(queue.empty());
+    EXPECT_EQ(queue.size(), 0);
+    EXPECT_DEATH({ queue.front(); }, ".*");
+}
+
+TEST(ConstexprQueueFunctionalityTest, Operators_FullQueue)
 {
     constexpr_queue<int, 3> queue1;
     queue1.push(1);
