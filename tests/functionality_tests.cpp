@@ -304,3 +304,19 @@ TEST(ConstexprQueueFunctionalityTest, MoveConstructorAndAssignment)
     EXPECT_EQ(another.front(), 10);
     EXPECT_EQ(another.back(), 20);
 }
+
+TEST(ConstexprQueueFunctionalityTest, CompileTimeUsage)
+{
+    constexpr auto build_queue = [] {
+        constexpr_queue<int, 3> queue;
+        auto queu2 = queue;
+        queu2.push(1);
+        queu2.push(2);
+        return queu2;
+    };
+
+    constexpr auto queue = build_queue();
+    static_assert(queue.size() == 2, "Queue should contain two elements");
+    static_assert(queue.front() == 1, "Front should be 1");
+    static_assert(queue.back() == 2, "Back should be 2");
+}
