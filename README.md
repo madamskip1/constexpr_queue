@@ -39,7 +39,7 @@ include(FetchContent)
 FetchContent_Declare(
   Constexpr_Queue
   GIT_REPOSITORY https://github.com/madamskip1/constexpr_queue.git
-  GIT_TAG        master
+  GIT_TAG        v1.0.0
 )
 
 FetchContent_MakeAvailable(Constexpr_Queue)
